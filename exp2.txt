@@ -1,0 +1,88 @@
+TITLE Add and Subtract              (AddSub.asm)
+
+ 
+INCLUDELIB kernel32.lib
+include irvine32.inc
+
+ 
+.MODEL flat,stdcall
+ 
+ExitProcess PROTO,              ; exit program
+dwExitCode:DWORD		; return code
+
+.data
+array_size = 20
+str1 byte "enter a signed integer ",0
+str2 byte "the sum of the integers is ",0
+str3 byte "how many integers will be added?",0
+str4 byte "the postive sum : ",0
+str5 byte "the negtive sum : " , 0 
+err0 byte "the array cannot be larger than 20",0
+array dword array_size dup(?)
+
+.code
+main PROC
+	 
+	call Clrscr
+	mov esi,offset array
+	mov edx , offset str1
+	call tips
+	mov ecx , eax
+	call rint
+	call arraysum 
+	mov edx , offset str2
+	call WriteString 
+	call WriteInt
+	mov esi,offset array
+	call possum
+	call negsum
+	push 0h
+	call ExitProcess
+ 
+main ENDP
+
+
+
+
+
+tips proc uses edx
+	mov edx , offset str3
+	call WriteString 
+	call ReadInt
+	cmp eax,array_size
+	jg J1
+	cmp eax ,0
+	jl J1
+	ret
+
+J1:
+	mov edx , offset err0
+	call WriteString
+	push 0h
+	call ExitProcess
+
+tips endp 
+
+rint proc uses eax ecx esi edx
+L1:
+	call WriteString 
+	call ReadInt
+	mov [esi],eax
+	add esi,type dword
+	loop L1
+	ret
+
+rint endp
+
+arraysum proc uses  ecx esi edx
+	mov eax,0
+L1:
+	add eax,[esi]
+	add esi ,type dword
+	loop L1
+	ret
+arraysum endp
+END main
+
+
+
