@@ -1,0 +1,14 @@
+
+;possum proc uses eax ecx esi edx
+	;	mov eax , 0
+	;L1:
+	;	cmp [esi] , 0
+	;	jg NO
+	;	add eax ,[esi]
+	;	add esi , type dword
+	;NO:	loop L1
+		;mov edx , offset str4
+		;call WriteString
+		;call WriteInt
+		ret
+;possum endp
